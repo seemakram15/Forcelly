@@ -8,16 +8,30 @@
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.forcelly.app",
+      "infoPlist": {
+        "NSCameraUsageDescription": "Forcelly needs camera access to take proof photos for your reminders.",
+        "NSPhotoLibraryUsageDescription": "Forcelly needs photo library access to upload proof images.",
+        "NSPhotoLibraryAddUsageDescription": "Forcelly saves proof photos to your library."
+      }
     },
     "android": {
+      "package": "com.forcelly.app",
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
-        "foregroundImage": "./assets/android-icon-foreground.png",
-        "backgroundImage": "./assets/android-icon-background.png",
-        "monochromeImage": "./assets/android-icon-monochrome.png"
+        "backgroundColor": "#5B4FE8",
+        "foregroundImage": "./assets/android-icon-foreground.png"
       },
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE",
+        "android.permission.READ_MEDIA_IMAGES",
+        "android.permission.RECEIVE_BOOT_COMPLETED",
+        "android.permission.VIBRATE",
+        "android.permission.POST_NOTIFICATIONS"
+      ]
     },
     "web": {
       "bundler": "metro",
@@ -26,7 +40,28 @@
     "plugins": [
       "expo-router",
       "expo-font",
-      "expo-image"
+      "expo-image",
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/icon.png",
+          "color": "#5B4FE8",
+          "defaultChannel": "forcelly-reminders"
+        }
+      ],
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Forcelly needs camera access to take proof photos."
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Forcelly needs photo access to upload proof images.",
+          "cameraPermission": "Forcelly needs camera access to take proof photos."
+        }
+      ]
     ]
   }
 }
