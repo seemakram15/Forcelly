@@ -5,7 +5,7 @@ import {
 } from 'react-native';
 import { useLocalSearchParams, router } from 'expo-router';
 import * as ImagePicker from 'expo-image-picker';
-import { useCameraPermissions, requestCameraPermissionsAsync } from 'expo-camera';
+import { Camera } from 'expo-camera';
 import Animated, { FadeIn, SlideInUp } from 'react-native-reanimated';
 import { supabase } from '../../lib/supabase';
 import { useAuthStore } from '../../store/auth';
@@ -30,7 +30,7 @@ export default function ProofScreen() {
   }, [occurrenceId]);
 
   async function takePhoto() {
-    const { status } = await requestCameraPermissionsAsync();
+    const { status } = await Camera.requestCameraPermissionsAsync();
 
     if (status !== 'granted') {
       pickFromGallery();

@@ -4,6 +4,7 @@ import { StatusBar } from 'expo-status-bar';
 import * as Notifications from 'expo-notifications';
 import * as ImagePicker from 'expo-image-picker';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+// @ts-ignore
 import '../global.css';
 import { supabase } from '../lib/supabase';
 import { useAuthStore } from '../store/auth';
