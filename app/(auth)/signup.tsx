@@ -3,7 +3,7 @@ import {
   View, Text, StyleSheet, ScrollView, KeyboardAvoidingView,
   Platform, Pressable, Alert,
 } from 'react-native';
-import { Link } from 'expo-router';
+import { Link, router } from 'expo-router';
 import { supabase } from '../../lib/supabase';
 import { useTheme } from '../../hooks/useTheme';
 import { Input } from '../../components/ui/Input';
@@ -35,8 +35,9 @@ export default function SignupScreen() {
     setLoading(true);
     const { data, error } = await supabase.auth.signUp({ email, password });
     if (error) { setLoading(false); Alert.alert('Signup failed', error.message); return; }
+
     if (data.user) {
-      await supabase.from('profiles').insert({
+      const { error: profileError } = await supabase.from('profiles').insert({
         id: data.user.id,
         email,
         full_name: fullName,
@@ -44,8 +45,18 @@ export default function SignupScreen() {
         total_completed: 0,
         total_missed: 0,
       });
+      if (profileError) console.warn('Profile insert failed:', profileError.message);
     }
+
     setLoading(false);
+
+    // If email confirmation is disabled, session is set and onAuthStateChange handles redirect.
+    // If confirmation is required, tell the user to check email.
+    if (!data.session) {
+      Alert.alert('Check your email', 'We sent a confirmation link. Confirm it, then sign in.');
+      router.replace('/(auth)/login');
+    }
+    // else: onAuthStateChange in _layout fires → app/index.tsx redirects to (tabs)
   }
 
   return (
